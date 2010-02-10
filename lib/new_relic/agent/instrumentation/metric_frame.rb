@@ -189,12 +189,18 @@ class NewRelic::Agent::Instrumentation::MetricFrame
     custom_parameters.merge!(p)
   end
 
-  private
+  def self.recording_web_transaction?
+    if c = Thread.current[:newrelic_metric_frame]
+      c.recording_web_transaction?
+    end
+  end
 
   def recording_web_transaction?(cat = category)
     0 == cat.index("Controller")
   end
   
+  private
+
   def update_apdex(stat, duration, failed)
     apdex_t = NewRelic::Control.instance.apdex_t
     case

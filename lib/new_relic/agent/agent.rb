@@ -45,7 +45,7 @@ module NewRelic
     #
     def ensure_worker_thread_started
       return unless control.agent_enabled? && control.monitor_mode? && !@invalid_license
-      if !running?
+      if !running? && !control['forked_job']
         # We got some reports of threading errors in Unicorn with this.
         log.debug "Detected that the worker loop is not running.  Restarting." rescue nil
         # Assume we've been forked, clear out stats that are left over from parent process

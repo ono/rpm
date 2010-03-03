@@ -14,6 +14,7 @@ module NewRelic
   # The Agent is a singleton that is instantiated when the plugin is
   # activated.
   class Agent
+    include ForkedTask
     
     # Specifies the version of the agent's communication protocol with
     # the NewRelic hosted site.
@@ -45,7 +46,7 @@ module NewRelic
     #
     def ensure_worker_thread_started
       return unless control.agent_enabled? && control.monitor_mode? && !@invalid_license
-      if !running?
+      if !running? && !forked_task?
         # We got some reports of threading errors in Unicorn with this.
         log.debug "Detected that the worker loop is not running.  Restarting." rescue nil
         # Assume we've been forked, clear out stats that are left over from parent process

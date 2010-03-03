@@ -90,6 +90,7 @@ module NewRelic
     require 'new_relic/histogram'
     
     require 'new_relic/agent/chained_call'
+    require 'new_relic/agent/forked_task'
     require 'new_relic/agent/agent'
     require 'new_relic/agent/shim_agent'
     require 'new_relic/agent/method_tracer'
